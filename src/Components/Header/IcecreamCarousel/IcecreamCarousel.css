@@ -1,0 +1,143 @@
+.icecreamCarouselContainer {
+    position: relative;
+}
+
+.icecreamCarouselBox {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  overflow: hidden;
+}
+
+.firstBackgrountDecorator {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.lastBackgroundDecorator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.icecreamContextBox {
+    position: absolute;
+    top: 25vh;
+    left: 4vw;
+    z-index: 10;
+    width: 494px;
+}
+
+.icecreamContextBox h2{
+    font-family: 'Amita', sans-serif;
+    font-size: 36px;
+    line-height: 54px;
+}
+
+.icecreamContextBox p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    color: #262424;
+    line-height: 30px;
+    margin-top: 24px;
+}
+
+.icecreamContextBox button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #F7FDFF;
+    width: 160px;
+    height: 48px;
+    border-radius: 4px;
+    margin-top: 40px;
+    cursor: pointer;
+}
+
+.icecreamNameListBox {
+    position: absolute;
+    top: 25vh;
+    right: 4vw;
+    z-index: 10;
+}
+
+.icecreamNameListButton {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    line-height: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.icecreamNameList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    gap: 28px;
+}
+
+.icecreamBGAndSliderButtonBox {
+    position: absolute;
+    top: 20vh;
+    left: 43vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10vh;
+}
+
+.icecreamBGDecorator {
+    width: 16.75vw;
+    height: 64.5vh;
+    border-radius: 9.5rem;
+}
+
+.icecreamBGDecorator img {
+    width: 100%;
+    height: 100%;
+    border-radius: 9.5rem;
+    object-fit: cover;
+}
+
+.icecreamSliderButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.icecreamSliderButtonBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+}
+
+.icecreamPicBox {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 42.6vw;
+    height: 78vh;
+    padding: 0;
+    margin: 0;
+    /* border: 2px solid #0C8CB5; */
+    position: absolute;
+    z-index: 50;
+    top: 14vh;
+    left: 30vw;
+}
+
+.icecreamPicBox img {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    height: 68vh;
+    width: auto;
+    z-index: 90;
+}

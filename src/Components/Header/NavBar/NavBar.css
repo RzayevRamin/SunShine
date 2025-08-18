@@ -1,0 +1,68 @@
+.companyNameBox h1 {
+  font-family: "Amita", sans-serif;
+  font-weight: bold;
+  font-size: 36px;
+  color: #0c8cb5;
+}
+
+.navBarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90vw;
+  position: absolute;
+  top: 2vh;
+  left: 4vw;
+  z-index: 99;
+}
+
+#navList {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5vw;
+}
+
+.navButtons {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  font-family: "Poppins", sans-serif;
+  color: #262424;
+  cursor: pointer;
+}
+
+.languageOptions {
+  font-size: 20px;
+  font-family: "Poppins", sans-serif;
+  color: #262424;
+  cursor: pointer;
+}
+
+#languageSelect {
+  font-size: 20px;
+  font-family: "Poppins", sans-serif;
+  color: #262424;
+  border: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: none;
+  padding: 0 5px;
+  width: auto;
+  overflow: visible;
+  cursor: pointer;
+}
+
+.userAndLanguageBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.3vw;
+}
+
+.userButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
