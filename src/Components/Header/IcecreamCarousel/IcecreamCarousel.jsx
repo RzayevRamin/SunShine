@@ -1,44 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./IcecreamCarousel.css";
 import firstBGDecorator from "../../../assets/Background/Icecream/firstBGDecorator.png";
 import lastBGDecorator from "../../../assets/Background/Icecream/lastBGDecorator.png";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
   const [isHover, setIsHover] = useState(false);
   const [direction, setDirection] = useState(0);
+  const bgSliderRef = useRef(null);
 
   const transitionConfig = { duration: 0.6, ease: "easeInOut" };
 
   const variants = {
-    enter: (direction) => ({
-      x: direction > 0 ? 1000 : -1000,
-      y: direction > 0 ? -1000 : 1000,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      y: 0,
-      opacity: 1,
-      transition: transitionConfig,
-    },
-    exit: (direction) => ({
-      x: direction > 0 ? -1000 : 1000,
-      y: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-      transition: transitionConfig,
-    }),
-  };
+  enter: (direction) => ({
+    x: direction > 0 ? window.innerWidth / 2 : -window.innerWidth / 2,
+    y: direction > 0 ? -window.innerHeight / 2 : window.innerHeight / 2,
+    opacity: 1,
+    scale: 0.5,
+    position: "absolute",
+  }),
+  center: {
+    x: 0,
+    y: 0,
+    scale: 1,
+    opacity: 1,
+    position: "absolute",
+    transition: { duration: 0.6, ease: "easeInOut" },
+  },
+  exit: (direction) => ({
+    x: direction > 0 ? -window.innerWidth / 2 : window.innerWidth / 2,
+    y: direction > 0 ? window.innerHeight / 2 : -window.innerHeight / 2,
+    scale: 0.5,
+    opacity: 1,
+    position: "absolute",
+    transition: { duration: 0.6, ease: "easeInOut" },
+  }),
+};
 
   const handleNext = () => {
     setDirection(1);
     setCurrentIndex((prev) => (prev === icecreams.length - 1 ? 0 : prev + 1));
+    bgSliderRef.current.slickNext();
   };
 
   const handlePrev = () => {
     setDirection(-1);
     setCurrentIndex((prev) => (prev === 0 ? icecreams.length - 1 : prev - 1));
+    bgSliderRef.current.slickPrev();
   };
 
   return (
@@ -51,8 +63,6 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
         <div className="firstBackgrountDecorator">
           <img src={firstBGDecorator} alt="First Decorator" />
         </div>
-
-        {/* ==== Context (text + button) ==== */}
         <div className="icecreamContextBox">
           <AnimatePresence mode="wait">
             <motion.div
@@ -70,8 +80,8 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
               </motion.h2>
               <motion.p transition={transitionConfig}>
                 Whether it's a laugh-filled gathering with friends or a solitary
-                break on a hot summer day... every flavor here is there to brighten
-                your day.
+                break on a hot summer day... every flavor here is there to
+                brighten your day.
               </motion.p>
               <motion.button
                 key={icecreams[currentIndex].name + "-btn"}
@@ -96,25 +106,31 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
             </motion.div>
           </AnimatePresence>
         </div>
-
-        {/* ==== BG Decorator + Slider buttons ==== */}
         <div className="icecreamBGAndSliderButtonBox">
           <div className="icecreamBGDecorator">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={icecreams[currentIndex].bg}
-                src={icecreams[currentIndex].bg}
-                alt={icecreams[currentIndex].name}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={transitionConfig}
-              />
-            </AnimatePresence>
+            <Slider
+              asNavFor={null}
+              slidesToShow={1}
+              slidesToScroll={1}
+              infinite={true}
+              speed={600}
+              arrows={false}
+              swipe={false}
+              ref={(slider) => (bgSliderRef.current = slider)}
+            >
+              {icecreams.map((icecreams, index) => (
+                <div key={index}>
+                  <img
+                    src={icecreams.bg}
+                    alt={icecreams.name}
+                    className="icecreamBGSliderImg"
+                  />
+                </div>
+              ))}
+            </Slider>
           </div>
           <div className="icecreamSliderButtonBox">
             <button className="icecreamSliderButton" onClick={handlePrev}>
-              {/* SVG arrow left */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="19"
@@ -129,7 +145,6 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
               </svg>
             </button>
             <button className="icecreamSliderButton" onClick={handleNext}>
-              {/* SVG arrow right */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="19"
@@ -145,25 +160,21 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
             </button>
           </div>
         </div>
-
-        {/* ==== Icecream Picture ==== */}
         <div className="icecreamPicBox">
-          <AnimatePresence custom={direction} mode="wait">
-            <motion.img
-              key={icecreams[currentIndex].pic}
-              src={icecreams[currentIndex].pic}
-              alt={icecreams[currentIndex].name}
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              className="icecreamPicImg"
-            />
-          </AnimatePresence>
+          <AnimatePresence custom={direction} mode="sync">
+  <motion.img
+    key={icecreams[currentIndex].pic}
+    src={icecreams[currentIndex].pic}
+    alt={icecreams[currentIndex].name}
+    custom={direction}
+    variants={variants}
+    initial="enter"
+    animate="center"
+    exit="exit"
+    className="icecreamPicImg"
+  />
+</AnimatePresence>
         </div>
-
-        {/* ==== Icecream Name List ==== */}
         <div className="icecreamNameListBox">
           <ul className="icecreamNameList">
             {icecreams.map((icecream, index) => (
@@ -173,7 +184,10 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
                   style={{
                     fontWeight: index === currentIndex ? "bold" : "normal",
                   }}
-                  onClick={() => setCurrentIndex(index)}
+                  onClick={() => {
+                    setCurrentIndex(index);
+                    bgSliderRef.current.slickGoTo(index);
+                  }}
                 >
                   {icecream.name}
                 </button>

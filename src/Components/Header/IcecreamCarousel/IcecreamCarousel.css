@@ -93,14 +93,16 @@
 }
 
 .icecreamBGDecorator {
+    position: relative;
     width: 16.75vw;
     height: 64.5vh;
     border-radius: 9.5rem;
+    overflow: hidden;
 }
 
-.icecreamBGDecorator img {
-    width: 100%;
-    height: 100%;
+.icecreamBGSliderImg {
+    width: 16.75vw;
+    height: 64.5vh;
     border-radius: 9.5rem;
     object-fit: cover;
 }
