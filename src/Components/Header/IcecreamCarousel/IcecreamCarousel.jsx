@@ -2,22 +2,14 @@ import React, { useState } from "react";
 import "./IcecreamCarousel.css";
 import firstBGDecorator from "../../../assets/Background/Icecream/firstBGDecorator.png";
 import lastBGDecorator from "../../../assets/Background/Icecream/lastBGDecorator.png";
-import BlueberryBg from "../../../assets/Background/Icecream/BlueberryBG.png";
-import BananaBg from "../../../assets/Background/Icecream/BananaBG.png";
-import ChocolateBg from "../../../assets/Background/Icecream/ChocolateBG.png";
-import StrawberryBg from "../../../assets/Background/Icecream/StrawberryBG.png";
-import CakeBg from "../../../assets/Background/Icecream/CakeBG.png";
-import BlueberryIcecreamPic from "../../../assets/IcecreamsPic/Blueberry.png";
-import BananaIcecreamPic from "../../../assets/IcecreamsPic/Banana.png";
-import ChocolateIcecreamPic from "../../../assets/IcecreamsPic/Chocolate.png";
-import StrawberryIcecreamPic from "../../../assets/IcecreamsPic/Strawberry.png";
-import CakeIcecreamPic from "../../../assets/IcecreamsPic/Cake.png";
 // eslint-disable-next-line no-unused-vars
-import { AnimatePresence, hover, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
   const [isHover, setIsHover] = useState(false);
   const [direction, setDirection] = useState(0);
+
+  const transitionConfig = { duration: 0.6, ease: "easeInOut" };
 
   const variants = {
     enter: (direction) => ({
@@ -29,13 +21,13 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
       x: 0,
       y: 0,
       opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: transitionConfig,
     },
     exit: (direction) => ({
       x: direction > 0 ? -1000 : 1000,
       y: direction > 0 ? 1000 : -1000,
       opacity: 0,
-      transition: { duration: 0.6, ease: "easeIn" },
+      transition: transitionConfig,
     }),
   };
 
@@ -54,45 +46,75 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
       <motion.div
         className="icecreamCarouselBox"
         animate={{ backgroundColor: icecreams[currentIndex].bgColor }}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
+        transition={transitionConfig}
       >
         <div className="firstBackgrountDecorator">
           <img src={firstBGDecorator} alt="First Decorator" />
         </div>
+
+        {/* ==== Context (text + button) ==== */}
         <div className="icecreamContextBox">
-          <h2 style={{ color: icecreams[currentIndex].fontColor }}>
-            The tastiest way to cool down
-          </h2>
-          <p>
-            Whether it's a laugh-filled gathering with friends or a solitary
-            break on a hot summer day... every flavor here is there to brighten
-            your day.
-          </p>
-          <button
-            style={{
-              backgroundColor: isHover
-                ? "transparent"
-                : icecreams[currentIndex].fontColor,
-              color: isHover ? icecreams[currentIndex].fontColor : "white",
-              border: isHover
-                ? `1px solid ${icecreams[currentIndex].fontColor}`
-                : "none",
-            }}
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
-          >
-            Shop Now
-          </button>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={icecreams[currentIndex].name + "-context"}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={transitionConfig}
+            >
+              <motion.h2
+                style={{ color: icecreams[currentIndex].fontColor }}
+                transition={transitionConfig}
+              >
+                The tastiest way to cool down
+              </motion.h2>
+              <motion.p transition={transitionConfig}>
+                Whether it's a laugh-filled gathering with friends or a solitary
+                break on a hot summer day... every flavor here is there to brighten
+                your day.
+              </motion.p>
+              <motion.button
+                key={icecreams[currentIndex].name + "-btn"}
+                style={{
+                  backgroundColor: isHover
+                    ? "transparent"
+                    : icecreams[currentIndex].fontColor,
+                  color: isHover ? icecreams[currentIndex].fontColor : "white",
+                  border: isHover
+                    ? `1px solid ${icecreams[currentIndex].fontColor}`
+                    : "none",
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={transitionConfig}
+                onMouseEnter={() => setIsHover(true)}
+                onMouseLeave={() => setIsHover(false)}
+              >
+                Shop Now
+              </motion.button>
+            </motion.div>
+          </AnimatePresence>
         </div>
+
+        {/* ==== BG Decorator + Slider buttons ==== */}
         <div className="icecreamBGAndSliderButtonBox">
           <div className="icecreamBGDecorator">
-            <img
-              src={icecreams[currentIndex].bg}
-              alt={icecreams[currentIndex].name}
-            />
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={icecreams[currentIndex].bg}
+                src={icecreams[currentIndex].bg}
+                alt={icecreams[currentIndex].name}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={transitionConfig}
+              />
+            </AnimatePresence>
           </div>
           <div className="icecreamSliderButtonBox">
             <button className="icecreamSliderButton" onClick={handlePrev}>
+              {/* SVG arrow left */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="19"
@@ -107,6 +129,7 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
               </svg>
             </button>
             <button className="icecreamSliderButton" onClick={handleNext}>
+              {/* SVG arrow right */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="19"
@@ -122,8 +145,10 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
             </button>
           </div>
         </div>
+
+        {/* ==== Icecream Picture ==== */}
         <div className="icecreamPicBox">
-          <AnimatePresence custom={direction}>
+          <AnimatePresence custom={direction} mode="wait">
             <motion.img
               key={icecreams[currentIndex].pic}
               src={icecreams[currentIndex].pic}
@@ -137,6 +162,8 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
             />
           </AnimatePresence>
         </div>
+
+        {/* ==== Icecream Name List ==== */}
         <div className="icecreamNameListBox">
           <ul className="icecreamNameList">
             {icecreams.map((icecream, index) => (
@@ -154,6 +181,7 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
             ))}
           </ul>
         </div>
+
         <div className="lastBackgroundDecorator">
           <img src={lastBGDecorator} alt="Last Decorator" />
         </div>

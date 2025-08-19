@@ -1,14 +1,22 @@
 import React from "react";
 import "./NavBar.css";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 
 function NavBar({ icecreams, currentIndex }) {
 
+  const transitionConfig = { duration: 0.6, ease: "easeInOut" };
 
   return (
     <div className="navBarContainer">
       <div className="companyNameBox">
-        <h1 style={{ color: icecreams[currentIndex].fontColor }}>SunShine</h1>
+        <motion.h1
+          animate={{ color: icecreams[currentIndex].fontColor }}
+          transition={transitionConfig}
+        >
+          SunShine
+        </motion.h1>
       </div>
       <div className="navigationBarBox">
         <ul id="navList">
