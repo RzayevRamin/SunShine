@@ -1,19 +1,26 @@
-import React, {useState} from 'react'
-import './Header.css'
-import NavBar from './NavBar/NavBar'
-import IcecreamCarousel from './IcecreamCarousel/IcecreamCarousel'
-import { icecreams } from "./icecreamsData";
+import React from "react";
+import "./Header.css";
+import { Outlet } from "react-router-dom";
+import NavBar from "./NavBar/NavBar";
 
-function Header() {
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
+function Header({ icecreams, currentIceIndex, setCurrentIceIndex, currentPizzIndex, setCurrentPizzIndex, pizzas, activeCarousel, setActiveCarousel }) {
   return (
     <div className="headerContainer">
-        < NavBar icecreams={icecreams} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
-        < IcecreamCarousel icecreams={icecreams} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
+      <NavBar
+        icecreams={icecreams}
+        currentIndex={currentIceIndex}
+        setCurrentIndex={setCurrentIceIndex}
+        pizzas={pizzas}
+          currentPizzIndex={currentPizzIndex}
+          setCurrentPizzIndex={setCurrentPizzIndex}
+        activeCarousel={activeCarousel}
+        setActiveCarousel={setActiveCarousel}
+      />
+      <main>
+        <Outlet context={{ icecreams, currentIceIndex, setCurrentIceIndex, pizzas, currentPizzIndex, setCurrentPizzIndex }} />
+      </main>
     </div>
-  )
+  );
 }
 
-export default Header
+export default Header;

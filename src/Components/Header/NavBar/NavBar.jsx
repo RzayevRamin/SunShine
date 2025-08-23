@@ -1,18 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import "./NavBar.css";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-
-function NavBar({ icecreams, currentIndex }) {
-
+function NavBar({ icecreams, currentIceIndex, pizzas, currentPizzIndex, activeCarousel, setActiveCarousel }) {
   const transitionConfig = { duration: 0.6, ease: "easeInOut" };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handlePizzaClick = () => {
+    handleNavigate("/pizza");
+    setActiveCarousel("pizza");
+  };
+
+  const handleIcecreamClick = () => {
+    handleNavigate("/icecream");
+    setActiveCarousel("icecream");
+  };
+
+  const safeIceIndex = typeof currentIceIndex === "number" && currentIceIndex >= 0 && currentIceIndex < icecreams.length
+  ? currentIceIndex
+  : 0;
+
+const safePizzIndex = typeof currentPizzIndex === "number" && currentPizzIndex >= 0 && currentPizzIndex < pizzas.length
+  ? currentPizzIndex
+  : 0;
+
+  const currentIndex = activeCarousel === "icecream" ? safeIceIndex : safePizzIndex;
+  const currentColor = activeCarousel === "icecream" ? icecreams[safeIceIndex].fontColor : pizzas[safePizzIndex].bgColor;
+
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    setIsOpen(false);
+  };
 
   return (
     <div className="navBarContainer">
       <div className="companyNameBox">
         <motion.h1
-          animate={{ color: icecreams[currentIndex].fontColor }}
+          key={currentIndex}
+          initial={{ color: currentColor }}
+          animate={{ color: currentColor }}
           transition={transitionConfig}
         >
           SunShine
@@ -21,7 +53,33 @@ function NavBar({ icecreams, currentIndex }) {
       <div className="navigationBarBox">
         <ul id="navList">
           <li className="navListItems">
-            <button className="navButtons">Shop</button>
+            <button className="navButtons">Home</button>
+          </li>
+          <li className="navListItems">
+            <button
+              className="navButtons"
+              onClick={() => setIsOpen((prev) => !prev)}
+            >
+              Menu
+            </button>
+            {isOpen && (
+              <motion.ul className="subMenu"
+              key={currentIndex}
+          initial={{ backgroundColor: currentColor }}
+          animate={{ backgroundColor: currentColor }}
+          transition={transitionConfig}>
+                <li>
+                  <button onClick={() => handleIcecreamClick()}>
+                    Ice cream
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => handlePizzaClick()}>
+                    Pizza
+                  </button>
+                </li>
+              </motion.ul>
+            )}
           </li>
           <li className="navListItems">
             <button className="navButtons">Our Story</button>

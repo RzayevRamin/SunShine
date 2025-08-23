@@ -8,48 +8,54 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
+function IcecreamCarousel({
+  icecreams,
+  currentIceIndex,
+  setCurrentIceIndex,
+}) {
   const [isHover, setIsHover] = useState(false);
   const [direction, setDirection] = useState(0);
   const bgSliderRef = useRef(null);
 
   const transitionConfig = { duration: 0.6, ease: "easeInOut" };
 
+
+
   const variants = {
-  enter: (direction) => ({
-    x: direction > 0 ? window.innerWidth / 2 : -window.innerWidth / 2,
-    y: direction > 0 ? -window.innerHeight / 2 : window.innerHeight / 2,
-    opacity: 1,
-    scale: 0.5,
-    position: "absolute",
-  }),
-  center: {
-    x: 0,
-    y: 0,
-    scale: 1,
-    opacity: 1,
-    position: "absolute",
-    transition: { duration: 0.6, ease: "easeInOut" },
-  },
-  exit: (direction) => ({
-    x: direction > 0 ? -window.innerWidth / 2 : window.innerWidth / 2,
-    y: direction > 0 ? window.innerHeight / 2 : -window.innerHeight / 2,
-    scale: 0.5,
-    opacity: 1,
-    position: "absolute",
-    transition: { duration: 0.6, ease: "easeInOut" },
-  }),
-};
+    enter: (direction) => ({
+      x: direction > 0 ? window.innerWidth / 2 : -window.innerWidth / 2,
+      y: direction > 0 ? -window.innerHeight / 2 : window.innerHeight / 2,
+      opacity: 1,
+      scale: 0.5,
+      position: "absolute",
+    }),
+    center: {
+      x: 0,
+      y: 0,
+      scale: 1,
+      opacity: 1,
+      position: "absolute",
+      transition: { duration: 0.6, ease: "easeInOut" },
+    },
+    exit: (direction) => ({
+      x: direction > 0 ? -window.innerWidth / 2 : window.innerWidth / 2,
+      y: direction > 0 ? window.innerHeight / 2 : -window.innerHeight / 2,
+      scale: 0.5,
+      opacity: 1,
+      position: "absolute",
+      transition: { duration: 0.6, ease: "easeInOut" },
+    }),
+  };
 
   const handleNext = () => {
     setDirection(1);
-    setCurrentIndex((prev) => (prev === icecreams.length - 1 ? 0 : prev + 1));
+    setCurrentIceIndex((prev) => (prev === icecreams.length - 1 ? 0 : prev + 1));
     bgSliderRef.current.slickNext();
   };
 
   const handlePrev = () => {
     setDirection(-1);
-    setCurrentIndex((prev) => (prev === 0 ? icecreams.length - 1 : prev - 1));
+    setCurrentIceIndex((prev) => (prev === 0 ? icecreams.length - 1 : prev - 1));
     bgSliderRef.current.slickPrev();
   };
 
@@ -57,7 +63,7 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
     <div className="icecreamCarouselContainer">
       <motion.div
         className="icecreamCarouselBox"
-        animate={{ backgroundColor: icecreams[currentIndex].bgColor }}
+        animate={{ backgroundColor: icecreams[currentIceIndex].bgColor }}
         transition={transitionConfig}
       >
         <div className="firstBackgrountDecorator">
@@ -66,14 +72,14 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
         <div className="icecreamContextBox">
           <AnimatePresence mode="wait">
             <motion.div
-              key={icecreams[currentIndex].name + "-context"}
+              key={icecreams[currentIceIndex].name}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={transitionConfig}
             >
               <motion.h2
-                style={{ color: icecreams[currentIndex].fontColor }}
+                style={{ color: icecreams[currentIceIndex].fontColor }}
                 transition={transitionConfig}
               >
                 The tastiest way to cool down
@@ -84,14 +90,14 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
                 brighten your day.
               </motion.p>
               <motion.button
-                key={icecreams[currentIndex].name + "-btn"}
+                key={icecreams[currentIceIndex].name + "-btn"}
                 style={{
                   backgroundColor: isHover
                     ? "transparent"
-                    : icecreams[currentIndex].fontColor,
-                  color: isHover ? icecreams[currentIndex].fontColor : "white",
+                    : icecreams[currentIceIndex].fontColor,
+                  color: isHover ? icecreams[currentIceIndex].fontColor : "white",
                   border: isHover
-                    ? `1px solid ${icecreams[currentIndex].fontColor}`
+                    ? `1px solid ${icecreams[currentIceIndex].fontColor}`
                     : "none",
                 }}
                 initial={{ opacity: 0 }}
@@ -162,18 +168,18 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
         </div>
         <div className="icecreamPicBox">
           <AnimatePresence custom={direction} mode="sync">
-  <motion.img
-    key={icecreams[currentIndex].pic}
-    src={icecreams[currentIndex].pic}
-    alt={icecreams[currentIndex].name}
-    custom={direction}
-    variants={variants}
-    initial="enter"
-    animate="center"
-    exit="exit"
-    className="icecreamPicImg"
-  />
-</AnimatePresence>
+            <motion.img
+              key={icecreams[currentIceIndex].pic}
+              src={icecreams[currentIceIndex].pic}
+              alt={icecreams[currentIceIndex].name}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="icecreamPicImg"
+            />
+          </AnimatePresence>
         </div>
         <div className="icecreamNameListBox">
           <ul className="icecreamNameList">
@@ -182,10 +188,10 @@ function IcecreamCarousel({ icecreams, currentIndex, setCurrentIndex }) {
                 <button
                   className="icecreamNameListButton"
                   style={{
-                    fontWeight: index === currentIndex ? "bold" : "normal",
+                    fontWeight: index === currentIceIndex ? "bold" : "normal",
                   }}
                   onClick={() => {
-                    setCurrentIndex(index);
+                    setCurrentIceIndex(index);
                     bgSliderRef.current.slickGoTo(index);
                   }}
                 >
